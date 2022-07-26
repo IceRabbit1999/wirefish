@@ -1,2 +1,5 @@
 server:
   port: 9000
+
+ssh:
+  prv-key-path: /root/.ssh/id_rsa

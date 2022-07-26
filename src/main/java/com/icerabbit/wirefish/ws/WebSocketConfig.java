@@ -16,15 +16,19 @@ import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 public class WebSocketConfig implements WebSocketConfigurer {
 
     @Bean
-    public WebSocketInterceptor getInterceptor(){
+    public WebSocketInterceptor getInterceptor() {
         return new WebSocketInterceptor();
     }
 
     @Bean
-    public ServerEndpointExporter serverEndpointExporter(){return new ServerEndpointExporter();}
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
+    }
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new WirefishWebSocketHandler(),"/ws").addInterceptors(getInterceptor());
+        registry.addHandler(new WirefishWebSocketHandler(), "/ws")
+                .addInterceptors(getInterceptor())
+                .setAllowedOrigins("*");
     }
 }

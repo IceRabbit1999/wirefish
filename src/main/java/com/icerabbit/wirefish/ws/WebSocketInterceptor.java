@@ -18,10 +18,13 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
 
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+        log.info("beforeHandshake");
         if (request instanceof ServletServerHttpRequest) {
+            log.info("token");
             ServletServerHttpRequest serverHttpRequest = (ServletServerHttpRequest) request;
             String token = serverHttpRequest.getServletRequest().getHeader("token");
-            return "token-123456".equals(token);
+            //return "token-123456".equals(token);
+            return true;
         }
         return false;
     }

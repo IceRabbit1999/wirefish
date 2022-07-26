@@ -1,6 +1,8 @@
 package com.icerabbit.wirefish.ws;
 
+import com.icerabbit.wirefish.service.WebSSH;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.*;
 
 import java.util.HashMap;
@@ -13,7 +15,10 @@ import java.util.Map;
 @Slf4j
 public class WirefishWebSocketHandler implements WebSocketHandler {
 
-    private static Map<String, WebSocketBean> beanMap = new HashMap<>();
+    @Autowired
+    WebSSH wirefish;
+
+    private static Map<String, WebSocketBean> wsMap = new HashMap<>();
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -21,12 +26,12 @@ public class WirefishWebSocketHandler implements WebSocketHandler {
         WebSocketBean webSocketBean = new WebSocketBean();
         webSocketBean.setSession(session);
         webSocketBean.setId(session.getId());
-        beanMap.put(webSocketBean.getId(), webSocketBean);
+        wsMap.put(webSocketBean.getId(), webSocketBean);
     }
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        log.info("Received message from:" + beanMap.get(session.getId()) + ", Content is [" + message.getPayload());
+        log.info("Received message from:" + wsMap.get(session.getId()) + ", Content is [" + message.getPayload());
         TextMessage textMessage = new TextMessage("Server has received your message.");
         session.sendMessage(textMessage);
     }
@@ -37,13 +42,13 @@ public class WirefishWebSocketHandler implements WebSocketHandler {
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
         log.error(exception.getMessage());
         session.close();
-        beanMap.remove(session.getId());
+        wsMap.remove(session.getId());
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         log.info("websocket disconnected");
-        beanMap.remove(session.getId());
+        wsMap.remove(session.getId());
     }
 
     @Override

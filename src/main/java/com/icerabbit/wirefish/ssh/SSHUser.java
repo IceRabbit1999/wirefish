@@ -1,6 +1,7 @@
 package com.icerabbit.wirefish.ssh;
 
 import com.jcraft.jsch.UserInfo;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -8,7 +9,15 @@ import lombok.extern.slf4j.Slf4j;
  * @Date 7/21/22 7:38 PM
  **/
 @Slf4j
+@Data
 public class SSHUser implements UserInfo {
+
+    private String username;
+    private String password;
+    private String host;
+    private int port;
+    private String id;
+
     @Override
     public String getPassphrase() {
         log.info("getPassphrase");
@@ -18,7 +27,7 @@ public class SSHUser implements UserInfo {
     @Override
     public String getPassword() {
         log.info("getPassword");
-        return "8DpyZ?L41wsZ";
+        return password;
     }
 
     @Override

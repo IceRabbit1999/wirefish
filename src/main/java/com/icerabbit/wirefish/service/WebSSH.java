@@ -1,7 +1,10 @@
 package com.icerabbit.wirefish.service;
 
+import com.icerabbit.wirefish.ssh.Command;
 import com.icerabbit.wirefish.ssh.SSHUser;
 import com.jcraft.jsch.JSchException;
+
+import java.io.IOException;
 
 /**
  * @Author iceRabbit
@@ -9,11 +12,12 @@ import com.jcraft.jsch.JSchException;
  **/
 public interface WebSSH {
 
-    void connect(SSHUser user);
+    boolean connect(SSHUser user);
 
-    void disConnect(SSHUser user) throws JSchException;
+    boolean disConnect(SSHUser user) throws JSchException;
 
-    void handleData(String command);
+    boolean execCommand(Command command) throws IOException;
 
+    void stop(SSHUser user);
 
 }
